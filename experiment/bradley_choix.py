@@ -224,24 +224,29 @@ def create_perturbed_matrix(comparison_matrix, epsilon=1):
 def print_and_save_results(results, method, comparison_matrix):
     """
     Print detailed results and save rankings to CSV using original image IDs.
-    Includes:
-    - Raw ratings and ranks
-    - Standardized ratings and ranks
-    - Normalized ratings and ranks
+    Includes the following columns:
+    - image_id
+    - complexity
+    - matrix_index
+    - parameter
+    - std_error
+    - ci_lower
+    - ci_upper
+    - p_value
     """
     # Load the index to ID mapping
-    id_mapping = np.load("sem/npy/id_to_index.npy", allow_pickle=True).item()
+    id_mapping = np.load("npy/id_to_index.npy", allow_pickle=True).item()
     index_to_id = {v: k for k, v in id_mapping.items()}
 
-    # Create DataFrame first to help with calculations
+    # Create DataFrame with required columns
     data = []
     for i in range(len(comparison_matrix)):
         original_id = index_to_id[i]
         data.append(
             {
-                "matrix_index": int(i),
                 "image_id": int(original_id),
-                "rating": results["ratings"][i],
+                "complexity": results["ratings"][i],
+                "matrix_index": i,
                 "parameter": results["parameters"][i],
                 "std_error": results["std_errors"][i],
                 "ci_lower": results["conf_intervals"][0][i],
@@ -252,131 +257,20 @@ def print_and_save_results(results, method, comparison_matrix):
 
     df = pd.DataFrame(data)
 
-    # Sort by rating in descending order
-    df = df.sort_values("rating", ascending=False)
-
-    # Add raw ranks
-    df["rank"] = range(1, len(df) + 1)
-
-    # Process ratings
-    ratings = df["rating"].values
-
-    # Standardized ratings (z-score then scale to [0,1])
-    z_scores = (ratings - np.mean(ratings)) / np.std(ratings)
-    standardized_ratings = (z_scores - z_scores.min()) / (
-        z_scores.max() - z_scores.min()
-    )
-    df["standardized_rating"] = [f"{x:.4f}" for x in standardized_ratings]
-    df["standardized_rating"] = df["standardized_rating"].astype(float)
-
-    # Normalized ratings (min-max scaling to [0,1])
-    normalized_ratings = (ratings - ratings.min()) / (ratings.max() - ratings.min())
-    df["normalized_rating"] = [f"{x:.4f}" for x in normalized_ratings]
-    df["normalized_rating"] = df["normalized_rating"].astype(float)
-
-    # Process ranks
-    ranks = df["rank"].values
-
-    # Standardized ranks (z-score then scale to [0,1])
-    z_scores_ranks = (ranks - np.mean(ranks)) / np.std(ranks)
-    standardized_ranks = (z_scores_ranks - z_scores_ranks.min()) / (
-        z_scores_ranks.max() - z_scores_ranks.min()
-    )
-    df["standardized_rank"] = [f"{x:.4f}" for x in standardized_ranks]
-    df["standardized_rank"] = df["standardized_rank"].astype(float)
-
-    # Normalized ranks (scale to [0,1])
-    df["normalized_rank"] = df["rank"].apply(
-        lambda x: f"{(len(df) - x)/(len(df) - 1):.4f}"
-    )
-    df["normalized_rank"] = df["normalized_rank"].astype(float)
-
-    # Print results
-    print(f"\nResults using {method.upper()} method:")
-    print("\nDetailed image statistics:")
-    print(
-        "Index   Image ID  Rating  Std.Rating  Norm.Rating  Rank  Std.Rank  Norm.Rank  Param   Std.Err   95% CI           p-value"
-    )
-    print("-" * 130)
-
-    for _, row in df.iterrows():
-        print(
-            f"{int(row['matrix_index']):^6d} {int(row['image_id']):^9d} {row['rating']:^7.4f} "
-            f"{row['standardized_rating']:^10.4f} {row['normalized_rating']:^11.4f} "
-            f"{int(row['rank']):^5d} {row['standardized_rank']:^9.4f} {row['normalized_rank']:^9.4f} "
-            f"{row['parameter']:7.3f} {row['std_error']:8.3f} "
-            f"[{row['ci_lower']:6.3f}, {row['ci_upper']:6.3f}] "
-            f"{row['p_value']:8.3f}"
-        )
-
-    # Ensure integer types for index columns
-    df["matrix_index"] = df["matrix_index"].astype(int)
-    df["image_id"] = df["image_id"].astype(int)
-    df["rank"] = df["rank"].astype(int)
-
-    # Reorder columns
-    column_order = [
-        "image_id",
-        "matrix_index",
-        "rating",
-        "standardized_rating",
-        "normalized_rating",
-        "rank",
-        "standardized_rank",
-        "normalized_rank",
-        "parameter",
-        "std_error",
-        "ci_lower",
-        "ci_upper",
-        "p_value",
-    ]
-    df = df[column_order]
+    # Sort by complexity in descending order
+    df = df.sort_values("complexity", ascending=False)
 
     # Save to CSV
-    filename = f"bradley_terry_rankings_{method}.csv"
+    filename = f"bradley_terry_complexity_{method}.csv"
     df.to_csv(filename, index=False)
-    print(f"\nRankings saved to {filename}")
+    print(f"\nComplexity scores saved to {filename}")
 
-    if results.get("perturbed", False):
-        print(
-            "\nNote: Results were calculated using a perturbed matrix to ensure connectivity."
-        )
-
-    print_correlations(df)
     return df
-
-
-def print_correlations(df):
-    """
-    Print correlations between standardized/normalized ratings and ranks.
-    Uses both Pearson and Spearman correlation coefficients.
-    """
-    # Select columns for correlation analysis
-    cols = [
-        "standardized_rating",
-        "normalized_rating",
-        "standardized_rank",
-        "normalized_rank",
-    ]
-    corr_df = df[cols]
-
-    # Calculate correlations
-    pearson_corr = corr_df.corr(method="pearson")
-    spearman_corr = corr_df.corr(method="spearman")
-    kendall_corr = corr_df.corr(method="kendall")
-
-    print("\nCorrelation Analysis:")
-    print("\nPearson Correlation:")
-    print(pearson_corr.round(4))
-    print("\nSpearman Correlation:")
-    print(spearman_corr.round(4))
-    print("\nKendall Correlation:")
-    print(kendall_corr.round(4))
 
 
 def example_usage():
     # Load comparison matrix
-    comparison_matrix = np.load("sem/npy/probability_matrix.npy")
+    comparison_matrix = np.load("npy/probability_matrix.npy")
 
     # Fit model using different methods
     methods = ["lsr", "mm", "opt"]
@@ -386,12 +280,7 @@ def example_usage():
     for method in methods:
         results = fit_bradley_terry(comparison_matrix, method=method)
         rankings_df = print_and_save_results(results, method, comparison_matrix)
-
         all_rankings[method] = rankings_df
-
-        # Get the id mapping for the example
-        id_mapping = np.load("sem/npy/id_to_index.npy", allow_pickle=True).item()
-        index_to_id = {v: k for k, v in id_mapping.items()}
 
     return all_rankings
 

@@ -61,17 +61,4 @@ def cross_validate(
                         _append(model_results[s], k, v)
 
             fit_mod(model_strs, df_train, df_test)
-
-            """
-            # ablation
-            model_strs = [
-                "visc_symmetry",
-                "sqrt_seg_64points + sqrt_num_classes + visc_symmetry",
-            ]
-            
-
-            df_train_nona = df_train[~df_train["visc_symmetry"].isna()]
-            df_test_nona = df_test[~df_test["visc_symmetry"].isna()]
-            fit_mod(model_strs, df_train_nona, df_test_nona)
-            """
     return model_results

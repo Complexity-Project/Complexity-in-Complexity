@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use our results/dataset/features/evaluation scripts, please cite the paper as below."
+authors:
+  - family-names: "Sarıtaş"
+    given-names: "Karahan"
+  - family-names: "Dayan"
+    given-names: "Peter"
+  - family-names: "Shen"
+    given-names: "Tingke"
+  - family-names: "Nath"
+    given-names: "Surabhi S"
+title: "Complexity in Complexity: Understanding Visual Complexity Through Structure, Color, and Surprise"
+date-released: 2025-05-07
+url: "https://arxiv.org/abs/2501.15890"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Sarıtaş"
+      given-names: "Karahan"
+    - family-names: "Dayan"
+      given-names: "Peter"
+    - family-names: "Shen"
+      given-names: "Tingke"
+    - family-names: "Nath"
+      given-names: "Surabhi S"
+  year: 2025
+  title: "Complexity in Complexity: Understanding Visual Complexity Through Structure, Color, and Surprise"
+  url: "https://arxiv.org/abs/2501.15890"
+  archivePrefix: "arXiv"
+  eprint: "2501.15890"
