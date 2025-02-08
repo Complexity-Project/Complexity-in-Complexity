@@ -5,3 +5,8 @@ networkx
 statsmodels
 scikit-learn
 choix
+
+# for gemini surprise scores
+Pillow>=8.0       
+google-generativeai>=0.1.0
+tqdm>=4.0

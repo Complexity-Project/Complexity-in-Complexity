@@ -36,7 +36,7 @@ Using these features alongside existing segmentation/object-based features, we d
 2. **Download & Unzip SVG Dataset**
 
    ```bash
-    # Make sure you'reinside the Complexity-in-Complexity/ directory
-    # Then unzip the dataset into an "SVG" folder:
-    unzip SVG_dataset.zip -d SVG
+    # Make sure you're inside the Complexity-in-Complexity/ directory
+    # Then unzip the dataset into the "datasets/SVG" folder:
+    unzip SVG_dataset.zip -d datasets/SVG
    ```
