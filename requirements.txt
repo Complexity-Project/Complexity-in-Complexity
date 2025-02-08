@@ -1,12 +1,25 @@
-numpy
-scipy
-pandas
-networkx
-statsmodels
-scikit-learn
-choix
+# Core image processing and math
+numpy>=1.21.0        
+opencv-python-headless>=4.5.0 
+Pillow>=8.0      
 
-# for gemini surprise scores
-Pillow>=8.0       
-google-generativeai>=0.1.0
-tqdm>=4.0
+# Data processing and statistics
+scipy>=1.7.0         
+pandas>=1.3.0         
+statsmodels>=0.13.0  
+
+# Machine learning and optimization
+scikit-learn>=1.0.0   
+choix>=0.3.4          
+
+# Graph processing
+networkx>=2.6.0     
+
+# Gemini AI integration
+google-generativeai>=0.1.0  
+
+# Jupyter support
+ipykernel>=6.0.0       # Added for notebook support
+
+# Utilities
+tqdm>=4.0       
