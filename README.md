@@ -51,6 +51,6 @@ We further introduce a new dataset called **S**urprising **V**isual **G**enome (
 
    ```bash
     # Make sure you're inside the Complexity-in-Complexity/ directory
-    # Then unzip the dataset into the "datasets/SVG" folder:
-    unzip SVG_dataset.zip -d datasets/SVG
+    # Then unzip the dataset into the "SVG" folder:
+    unzip SVG_dataset.zip -d SVG
    ```
