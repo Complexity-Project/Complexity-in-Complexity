@@ -16,7 +16,7 @@ We present novel interpretable features for **visual complexity**, combining:
 
 1. **Multi-Scale Sobel Gradient (MSG)** to capture **structural intensity** variations in images,  
 2. **Multi-Scale Unique Color (MUC)** to quantify **colorfulness** at multiple scales,  
-3. **Surprise Scores** derived from **Large Language Models**, indicating **unusual/novel** objects or contexts.
+3. **Surprise Scores** derived from **Large Language Models**, indicating **unusual/surprising** objects or contexts.
 
 Using these features alongside existing segmentation/object-based features, we demonstrate improved performance in predicting **human-rated visual complexity** across multiple datasets. 
 
