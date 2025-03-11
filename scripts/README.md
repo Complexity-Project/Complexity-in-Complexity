@@ -8,3 +8,4 @@ The script saves its output in a CSV with the following columns:
 - **raw_response**: The raw response text from the Gemini API call, included for reference.
 
 You can use `algorithms.py` to calculate Multi-Scale Sobel Gradients (MSG) and Multi-Scale Unique Colors (MUC) scores for any image. The script takes an image file and prints the scores to the console. 
+ 

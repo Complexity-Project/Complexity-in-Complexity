@@ -227,6 +227,7 @@ def print_and_save_results(results, method, comparison_matrix):
     Includes the following columns:
     - image_id
     - complexity
+    - complexity_normalized (0-1 scale where lowest is 0, highest is 1)
     - matrix_index
     - parameter
     - std_error
@@ -238,14 +239,27 @@ def print_and_save_results(results, method, comparison_matrix):
     id_mapping = np.load("npy/id_to_index.npy", allow_pickle=True).item()
     index_to_id = {v: k for k, v in id_mapping.items()}
 
+    # Get complexity ratings
+    complexity_ratings = results["ratings"]
+
+    # Calculate min and max for normalization
+    min_complexity = np.min(complexity_ratings)
+    max_complexity = np.max(complexity_ratings)
+
     # Create DataFrame with required columns
     data = []
     for i in range(len(comparison_matrix)):
         original_id = index_to_id[i]
+
+        # Calculate normalized complexity (0-1 scale)
+        normalized_complexity = (complexity_ratings[i] - min_complexity) / (
+            max_complexity - min_complexity
+        )
+
         data.append(
             {
                 "image_id": int(original_id),
-                "complexity": results["ratings"][i],
+                "complexity": normalized_complexity,
                 "matrix_index": i,
                 "parameter": results["parameters"][i],
                 "std_error": results["std_errors"][i],
