@@ -54,3 +54,5 @@ We further introduce a new dataset called **S**urprising **V**isual **G**enome (
     # Then unzip the dataset into the "SVG" folder:
     unzip SVG_dataset.zip -d SVG
    ```
+
+Alternatively, you can use our dataset directly from HuggingFace: [https://huggingface.co/datasets/Mortdecai/SVG](https://huggingface.co/datasets/Mortdecai/SVG)
