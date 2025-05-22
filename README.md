@@ -14,9 +14,9 @@ This repository contains code, data, and scripts for the paper:
 
 We present novel interpretable features for **visual complexity**, combining:
 
-1. **Multi-Scale Sobel Gradient (MSG)** to capture **structural intensity** variations in images,  
-2. **Multi-Scale Unique Color (MUC)** to quantify **colorfulness** at multiple scales,  
-3. **Surprise Scores** derived from **Large Language Models**, indicating **unusual/surprising** objects or contexts.
+1. Multi-Scale Sobel Gradient (MSG) to capture the patch-level symmetry at multiple scales,  
+2. Multi-Scale Unique Color (MUC) to quantify the colorfulness at multiple scales,  
+3. Surprise Scores derived from Large Language Models, indicating unusual/surprising objects or contexts.
 
 Using these features alongside existing segmentation/object-based features, we demonstrate improved performance in predicting **human-rated visual complexity** across multiple datasets. 
 
